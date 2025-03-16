@@ -85,18 +85,20 @@ return [
         'pgsql' => [
             'driver' => 'pgsql',
             'url' => env('DATABASE_URL'),
-            'host' => env('DB_HOST', 'ep-floral-brook-a401n5fy-pooler.us-east-1.aws.neon.tech'),
+            'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '5432'),
-            'database' => env('DB_DATABASE', 'CRMedic_DB'),
-            'username' => env('DB_USERNAME', 'CRMedic_DB_owner'),
+            'database' => env('DB_DATABASE', 'forge'),
+            'username' => env('DB_USERNAME', 'forge'),
             'password' => env('DB_PASSWORD', ''),
             'charset' => 'utf8',
             'prefix' => '',
-            'prefix_indexes' => true,
-            'search_path' => 'public',
-            'sslmode' => 'require',
-            'options' => explode(' ', env('DB_OPTIONS', '')),
+            'schema' => 'public',
+            'sslmode' => 'prefer',
         ],
+
+
+
+
 
         'sqlsrv' => [
             'driver' => 'sqlsrv',
