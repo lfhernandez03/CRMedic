@@ -18,7 +18,9 @@ class User extends Authenticatable
         'email',
         'password',
         'phone',
+        'birthdate',
         'rol',
+        'status',
     ];
 
     protected $hidden = [
@@ -29,4 +31,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function doctor()
+    {
+        return $this->hasOne(Doctors::class);
+    }
+
+    public function notifications()
+    {
+        return $this->hasMany(Notifications::class);
+    }
 }

@@ -12,8 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('notifications', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('user_id');
+            $table->string('message');
+            $table->enum('status', ['sended', 'pending', 'failed']);
+            $table->enum('type', ['email', 'sms'])->default('email');
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
         });
     }
 

@@ -12,8 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('doctors', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->unsignedBigInteger('speciality_id')->nullable();
+            $table->string('schedule')->nullable();
+            $table->string('patients_attended')->nullable();
+            $table->string('patients_pending')->nullable();
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
+            $table->foreign('speciality_id')->references('id')->on('specialities')->onDelete('set null');
+
         });
     }
 

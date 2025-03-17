@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\SpecialtiesResource\Pages;
-use App\Filament\Resources\SpecialtiesResource\RelationManagers;
-use App\Models\Specialties;
+use App\Filament\Resources\SpecialitiesResource\Pages;
+use App\Filament\Resources\SpecialitiesResource\RelationManagers;
+use App\Models\Specialities;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,9 +13,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class SpecialtiesResource extends Resource
+class SpecialitiesResource extends Resource
 {
-    protected static ?string $model = Specialties::class;
+    protected static ?string $model = Specialities::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -23,7 +23,9 @@ class SpecialtiesResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make('name')
+                    ->required()
+                    ->maxLength(255),
             ]);
     }
 
@@ -31,7 +33,16 @@ class SpecialtiesResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('name')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
@@ -56,9 +67,9 @@ class SpecialtiesResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListSpecialties::route('/'),
-            'create' => Pages\CreateSpecialties::route('/create'),
-            'edit' => Pages\EditSpecialties::route('/{record}/edit'),
+            'index' => Pages\ListSpecialities::route('/'),
+            'create' => Pages\CreateSpecialities::route('/create'),
+            'edit' => Pages\EditSpecialities::route('/{record}/edit'),
         ];
     }
 }

@@ -12,8 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('treatments', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('appointment_id');
+            $table->string('diagnosis');
+            $table->string('treatment');
             $table->timestamps();
+
+            $table->foreign('appointment_id')->references('id')->on('appointments')->onDelete('set null');
         });
     }
 
