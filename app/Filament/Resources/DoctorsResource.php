@@ -17,14 +17,22 @@ class DoctorsResource extends Resource
 {
     protected static ?string $model = Doctors::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-user-group';
     protected static ?string $navigationGroup = 'Employees Management';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make('schedule')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\Select::make('user_id')
+                    ->required()
+                    ->relationshipTo('users', 'id', 'name'),
+                Forms\Components\Select::make('speciality_id')
+                    ->required()
+                    ->relationshipTo('specialities', 'id', 'name'),
             ]);
     }
 

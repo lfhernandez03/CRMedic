@@ -17,13 +17,28 @@ class ReportsResource extends Resource
 {
     protected static ?string $model = Reports::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-chart-bar';
+    protected static ?string $navigationGroup = 'System Management';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make('title')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('description')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\Select::make('status')
+                    ->required()
+                    ->options([
+                        'pending' => 'Pending',
+                        'attended' => 'Attended',
+                    ]),
+                Forms\Components\Select::make('user_id')
+                    ->required()
+                    ->relationshipTo('users', 'id', 'name'),
             ]);
     }
 

@@ -19,8 +19,7 @@ return new class extends Migration
             $table->string('address');
             $table->date('birthdate');
             $table->enum('genre', ['M', 'F'])->default('M');    
-            $table->enum('status', ['active', 'inactive'])->default('active');
-            $table->string('medical_history');   
+            $table->enum('status', ['active', 'inactive'])->default('active'); 
             $table->timestamps();
         });
     }

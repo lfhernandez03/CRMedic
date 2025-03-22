@@ -17,13 +17,31 @@ class AppointmentsResource extends Resource
 {
     protected static ?string $model = Appointments::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-calendar';
+    protected static ?string $navigationGroup = 'Agenda Management';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make('date')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('time')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\Select::make('status')
+                    ->required()
+                    ->options([
+                        'pending' => 'Pending',
+                        'attended' => 'Attended',
+                    ]),
+                Forms\Components\Select::make('doctor_id')
+                    ->required()
+                    ->relationshipTo('doctors', 'id', 'schedule'),
+                Forms\Components\Select::make('patient_id')
+                    ->required()
+                    ->relationshipTo('patients', 'id', 'name'),
             ]);
     }
 

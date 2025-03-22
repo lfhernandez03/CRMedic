@@ -17,7 +17,8 @@ class SpecialitiesResource extends Resource
 {
     protected static ?string $model = Specialities::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
+    protected static ?string $navigationGroup = 'Employees Management';
 
     public static function form(Form $form): Form
     {

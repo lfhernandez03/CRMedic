@@ -17,7 +17,7 @@ class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-user';
     protected static ?string $navigationGroup = 'Employees Management';
 
     public static function form(Form $form): Form
@@ -47,13 +47,8 @@ class UserResource extends Resource
                     ]),
                     
 
-                Forms\Components\Select::make('status')
+                Forms\Components\Toggle::make('Active')
                     ->required()
-                    
-                    ->options([
-                        'active' => 'Active',
-                        'inactive' => 'Inactive',
-                    ]),
             ]);
     }
 
