@@ -26,7 +26,7 @@ class Reports extends Model
 
     public function doctor()
     {
-        return $this->belongsTo(Doctors::class);
+        return $this->belongsTo(User::class);
     }
 
     public function treatments()

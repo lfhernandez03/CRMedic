@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -11,7 +10,6 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class UserResource extends Resource
 {
@@ -27,33 +25,64 @@ class UserResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
+
                 Forms\Components\TextInput::make('email')
                     ->email()
                     ->required()
                     ->maxLength(255),
+
                 Forms\Components\TextInput::make('password')
                     ->password()
                     ->required()
                     ->maxLength(255),
+
                 Forms\Components\TextInput::make('phone')
                     ->tel()
                     ->maxLength(255),
+
                 Forms\Components\DatePicker::make('birthdate'),
+
                 Forms\Components\Select::make('rol')
                     ->required()
                     ->options([
                         'doctor' => 'Doctor',
                         'admin' => 'Admin',
-                    ]),
-                    
+                    ])
+                    ->reactive(),
 
                 Forms\Components\Select::make('status')
                     ->required()
-                    
                     ->options([
                         'active' => 'Active',
                         'inactive' => 'Inactive',
                     ]),
+
+                Forms\Components\Select::make('speciality_id')
+                    ->label('Speciality')
+                    ->relationship('speciality', 'name')
+                    ->hidden(fn($get) => !in_array($get('rol'), ['doctor', 'admin']))
+                    ->required(fn($get) => $get('rol') === 'doctor'),
+
+                Forms\Components\Select::make('horario')
+                    ->label('Schedule')
+                    ->options([
+                        '06:00 - 14:00' => '06:00 - 14:00',
+                        '14:00 - 22:00' => '14:00 - 22:00',
+                    ])
+                    ->hidden(fn($get) => $get('rol') !== 'doctor')
+                    ->required(fn($get) => $get('rol') === 'doctor'),
+
+                Forms\Components\TextInput::make('pacientes_atendidos')
+                    ->label('Patients Attended')
+                    ->numeric()
+                    ->default(0)
+                    ->hidden(fn($get) => $get('rol') !== 'doctor'),
+
+                Forms\Components\TextInput::make('pacientes_pendientes')
+                    ->label('Patients Pending')
+                    ->numeric()
+                    ->default(0)
+                    ->hidden(fn($get) => $get('rol') !== 'doctor'),
             ]);
     }
 
@@ -63,28 +92,48 @@ class UserResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
+
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
+
                 Tables\Columns\TextColumn::make('phone')
                     ->searchable(),
+
                 Tables\Columns\TextColumn::make('birthdate')
                     ->date()
                     ->sortable(),
+
                 Tables\Columns\TextColumn::make('rol')
                     ->searchable(),
+
                 Tables\Columns\TextColumn::make('status')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
+
+                Tables\Columns\TextColumn::make('speciality.name')
+                    ->label('Speciality')
+                    ->hidden(fn($record) => $record?->rol !== 'doctor'),
+
+                Tables\Columns\TextColumn::make('horario')
+                    ->label('Schedule')
+                    ->hidden(fn($record) => $record?->rol !== 'doctor'),
+
+                Tables\Columns\TextColumn::make('pacientes_atendidos')
+                    ->label('Patients Attended')
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->hidden(fn($record) => $record?->rol !== 'doctor'),
+
+                Tables\Columns\TextColumn::make('pacientes_pendientes')
+                    ->label('Patients Pending')
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->hidden(fn($record) => $record?->rol !== 'doctor'),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('rol')
+                    ->label('Filter by Role')
+                    ->options([
+                        'admin' => 'Admin',
+                        'doctor' => 'Doctor',
+                    ]),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -98,9 +147,7 @@ class UserResource extends Resource
 
     public static function getRelations(): array
     {
-        return [
-            //
-        ];
+        return [];
     }
 
     public static function getPages(): array

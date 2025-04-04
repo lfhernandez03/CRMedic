@@ -18,16 +18,29 @@ class SpecialitiesResource extends Resource
     protected static ?string $model = Specialities::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationGroup = 'Employees Management';
+
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
+                    ->label('Nombre de la Especialidad')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->unique(Specialities::class, 'name')
+                    ->placeholder('Ej: Cardiología, Pediatría, etc.'),
+
+                Forms\Components\Textarea::make('description')
+                    ->label('Descripción')
+                    ->rows(3)
+                    ->maxLength(500)
+                    ->nullable()
+                    ->placeholder('Descripción opcional de la especialidad...'),
             ]);
     }
+
 
     public static function table(Table $table): Table
     {
