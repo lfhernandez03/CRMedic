@@ -13,16 +13,15 @@ return new class extends Migration
     {
         Schema::create('doctors', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('speciality_id');
-            $table->string('schedule');
-            $table->string('patients_attended')->nullable();
-            $table->string('patients_pending')->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->unsignedBigInteger('speciality_id')->nullable();
+            $table->text('schedule')->nullable(); // Permite más texto si es necesario
+            $table->integer('patients_attended')->default(0);
+            $table->integer('patients_pending')->default(0);
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
             $table->foreign('speciality_id')->references('id')->on('specialities')->onDelete('set null');
-
         });
     }
 

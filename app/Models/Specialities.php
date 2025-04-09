@@ -16,8 +16,9 @@ class Specialities extends Model
 
     public function doctors()
     {
-        return $this->hasMany(Doctors::class);
+        return $this->hasMany(User::class, 'id_especialidad')->where('rol', 'medico');
     }
+
 
     public function reports()
     {
