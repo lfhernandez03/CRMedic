@@ -65,6 +65,32 @@ class ReportsResource extends Resource
                 ])
                 ->hint('Selecciona solo días de lunes a viernes'),
 
+            Forms\Components\Textarea::make('description')
+                ->label('Description')
+                ->required()
+                ->maxLength(10000),
+
+            Forms\Components\Select::make('report_type')
+                ->label('Report Type')
+                ->options([
+                    'patients_attended' => 'Patients Attended',
+                    'diagnosis' => 'Diagnosis',
+                    'lab_results' => 'Lab Results',
+                    'consultation_summary' => 'Consultation Summary',
+                ])
+                ->required(),
+
+            Forms\Components\Textarea::make('data')
+                ->label('Data')
+                ->rows(4)
+                ->nullable(),
+
+            Forms\Components\Select::make('specialty_id')
+                ->label('Specialty')
+                ->relationship('specialty', 'name')
+                ->nullable(),
+
+
             Forms\Components\TimePicker::make('time')
                 ->label('Time')
                 ->required(),

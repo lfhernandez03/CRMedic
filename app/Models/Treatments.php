@@ -10,15 +10,10 @@ class Treatments extends Model
     use HasFactory;
 
     protected $fillable = [
-        'appointment_id',
-        'diagnosis',
-        'treatment',
+        'title',
+        'purpose',
+        'instructions',
     ];
-
-    public function appointment()
-    {
-        return $this->belongsTo(Appointments::class);
-    }
 
     public function prescriptions()
     {

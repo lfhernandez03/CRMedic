@@ -12,6 +12,10 @@ class Reports extends Model
     protected $fillable = [
         'patient_id',
         'doctor_id',
+        'specialty_id',
+        'description',
+        'data',
+        'report_type',
         'date',
         'time',
         'status',
@@ -27,6 +31,11 @@ class Reports extends Model
     public function doctor()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function specialty()
+    {
+        return $this->belongsTo(Specialities::class);
     }
 
     public function treatments()

@@ -8,10 +8,8 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('reports', function (Blueprint $table) {
-            if (!Schema::hasColumn('reports', 'patient_id')) {
-                $table->foreignId('patient_id')
-                    ->constrained('patients')
-                    ->onDelete('cascade');
+            if (!Schema::hasColumn('reports', 'date')) {
+                $table->date('date')->nullable();
             }
         });
     }
@@ -19,8 +17,7 @@ return new class extends Migration {
     public function down(): void
     {
         Schema::table('reports', function (Blueprint $table) {
-            $table->dropForeign(['patient_id']);
-            $table->dropColumn('patient_id');
+            $table->dropColumn('date');
         });
     }
 };
