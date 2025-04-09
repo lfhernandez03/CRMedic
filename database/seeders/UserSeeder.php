@@ -13,13 +13,17 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         User::create([
-            'name' => 'Admin',
-            'email' => 'admin@example.com',
-            'password' => bcrypt('password'),
-            'phone' => '1234567890',
-            'birthdate' => '1990-01-01',
+            'name' => 'Administrador Principal',
+            'email' => 'admin@clinica.com',
+            'password' => bcrypt('admin123'),
+            'phone' => '3000000000',
+            'birthdate' => '1985-01-01',
             'rol' => 'admin',
             'status' => 'active',
+            'speciality_id' => null,
+            'horario' => 'Lun-Vie 9:00am - 5:00pm',
+            'pacientes_atendidos' => 0,
+            'pacientes_pendientes' => 0,
         ]);
     }
 }

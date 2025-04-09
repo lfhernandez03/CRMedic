@@ -18,8 +18,9 @@ return new class extends Migration
             $table->string('phone');
             $table->string('address');
             $table->date('birthdate');
-            $table->enum('genre', ['M', 'F'])->default('M');    
-            $table->enum('status', ['active', 'inactive'])->default('active'); 
+            $table->enum('genre', ['M', 'F'])->default('M');
+            $table->enum('status', ['active', 'inactive'])->default('active');
+            $table->text('medical_history')->nullable();
             $table->timestamps();
         });
     }

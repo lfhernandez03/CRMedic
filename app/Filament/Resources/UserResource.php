@@ -50,12 +50,14 @@ class UserResource extends Resource
                     ])
                     ->reactive(),
 
-                Forms\Components\Toggle::make('Active')
+                Forms\Components\Select::make('status')
                     ->required()
                     ->options([
                         'active' => 'Active',
                         'inactive' => 'Inactive',
                     ]),
+
+
 
                 Forms\Components\Select::make('speciality_id')
                     ->label('Speciality')

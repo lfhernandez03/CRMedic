@@ -11,6 +11,8 @@ use App\Notifications\AppointmentReminder;
 class SendNotification extends Page
 {
     protected static ?string $navigationIcon = 'heroicon-o-paper-airplane';
+    protected static ?string $navigationLabel = 'Send Notification';
+    protected static ?string $navigationGroup = 'Medical Management';
     protected static string $view = 'filament.pages.send-notification';
 
     public $user_id;
