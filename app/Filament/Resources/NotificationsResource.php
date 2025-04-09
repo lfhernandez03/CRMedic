@@ -3,27 +3,32 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\NotificationsResource\Pages;
-use App\Filament\Resources\NotificationsResource\RelationManagers;
 use App\Models\Notifications;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Notifications\DatabaseNotification;
 
 class NotificationsResource extends Resource
 {
-    protected static ?string $model = Notifications::class;
+    protected static ?string $model = DatabaseNotification::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-bell';
+    protected static ?string $navigationGroup = 'Medical Management';
+    protected static ?string $label = 'Notifications';
+    protected static ?string $pluralLabel = 'Notifications';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                //
+                // Las notificaciones normalmente no se editan desde aquí.
+                Forms\Components\TextInput::make('type')->disabled(),
+                Forms\Components\Textarea::make('data')->label('Content')->disabled(),
+                Forms\Components\TextInput::make('notifiable_type')->label('To')->disabled(),
+                Forms\Components\TextInput::make('created_at')->label('Sent At')->disabled(),
             ]);
     }
 
@@ -31,34 +36,43 @@ class NotificationsResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('type')
+                    ->label('Type')
+                    ->sortable()
+                    ->searchable(),
+
+                Tables\Columns\TextColumn::make('notifiable_type')
+                    ->label('To')
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('data')
+                    ->label('Content')
+                    ->limit(80)
+                    ->wrap(),
+
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Sent At')
+                    ->dateTime()
+                    ->sortable(),
             ])
-            ->filters([
-                //
-            ])
+            ->filters([])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
 
     public static function getRelations(): array
     {
-        return [
-            //
-        ];
+        return [];
     }
 
     public static function getPages(): array
     {
         return [
             'index' => Pages\ListNotifications::route('/'),
-            'create' => Pages\CreateNotifications::route('/create'),
-            'edit' => Pages\EditNotifications::route('/{record}/edit'),
         ];
     }
 }
