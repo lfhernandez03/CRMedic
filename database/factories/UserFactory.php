@@ -24,11 +24,17 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
-            'remember_token' => Str::random(10),
+            'name' => $this->faker->name(),
+            'email' => $this->faker->unique()->safeEmail(),
+            'password' => bcrypt('password'),
+            'phone' => $this->faker->phoneNumber(),
+            'birthdate' => $this->faker->date('Y-m-d', '2005-01-01'),
+            'rol' => $this->faker->randomElement(['admin', 'doctor',]),
+            'status' => $this->faker->randomElement(['active', 'inactive']),
+            'speciality_id' => null, // Ajusta si tienes un modelo de especialidades
+            'horario' => 'Lun-Vie 9:00am - 5:00pm',
+            'pacientes_atendidos' => $this->faker->numberBetween(0, 100),
+            'pacientes_pendientes' => $this->faker->numberBetween(0, 50),
         ];
     }
 

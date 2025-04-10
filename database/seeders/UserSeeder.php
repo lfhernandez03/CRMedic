@@ -13,8 +13,8 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         User::create([
-            'name' => 'Administrador Principal',
-            'email' => 'admin@clinica.com',
+            'name' => 'Administrador Secundario',
+            'email' => 'admin2@clinica.com',
             'password' => bcrypt('admin123'),
             'phone' => '3000000000',
             'birthdate' => '1985-01-01',
@@ -25,5 +25,8 @@ class UserSeeder extends Seeder
             'pacientes_atendidos' => 0,
             'pacientes_pendientes' => 0,
         ]);
+
+        // Generar 50 usuarios adicionales
+        User::factory(50)->create();
     }
 }
