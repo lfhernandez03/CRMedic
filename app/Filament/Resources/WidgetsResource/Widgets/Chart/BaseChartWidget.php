@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\WidgetsResource\Widgets;
+namespace App\Filament\Resources\WidgetsResource\Widgets\Chart;
 
 use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 use App\Models\User;
@@ -26,12 +26,12 @@ abstract class BaseChartWidget extends ApexChartWidget
         $sign = $percentageChange > 0 ? '↗' : ($percentageChange < 0 ? '↘' : '→');
         $subtitleColor = $percentageChange > 0 ? '#6ee7b7' : ($percentageChange < 0 ? '#f87171' : '#d1d5db');
         $color = $percentageChange > 0 ? '#4CAF50' : '#EF4444'; // verde o rojo
-        
+
         return [
             'chart' => [
                 'type' => 'area',
                 'sparkline' => ['enabled' => true],
-                'height' => 150,
+                'height' => 150, // Compacto como el ejemplo
             ],
             'series' => [
                 [
@@ -47,10 +47,10 @@ abstract class BaseChartWidget extends ApexChartWidget
                 'type' => 'gradient',
                 'gradient' => [
                     'shade' => 'light',
-                    'gradientToColors' => [$color], // Usa el mismo color si no quieres degradado multicolor
+                    'gradientToColors' => [$color],
                     'shadeIntensity' => 1,
                     'type' => 'vertical',
-                    'opacityFrom' => 0.4,
+                    'opacityFrom' => 0.3,
                     'opacityTo' => 0,
                     'stops' => [0, 90, 100],
                 ],
@@ -60,22 +60,23 @@ abstract class BaseChartWidget extends ApexChartWidget
                 'text' => number_format($totalUsers),
                 'offsetX' => 0,
                 'style' => [
-                    'fontSize' => '22px',
-                    'fontWeight' => 'bold',
+                    'fontSize' => '24px',
+                    'fontWeight' => '600',
                     'color' => '#ffffff',
                 ],
             ],
             'subtitle' => [
-                'text' => "{$percentageChange}% cambio {$sign}",
+                'text' => "{$percentageChange}% incremento {$sign}",
                 'offsetX' => 0,
                 'style' => [
-                    'fontSize' => '14px',
+                    'fontSize' => '13px',
                     'color' => $subtitleColor,
                 ],
             ],
             'tooltip' => [
                 'enabled' => false,
             ],
+            'labels' => [],
         ];
     }
 

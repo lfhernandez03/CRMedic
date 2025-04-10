@@ -1,5 +1,5 @@
 <?php
-namespace App\Filament\Resources\WidgetsResource\Widgets;
+namespace App\Filament\Resources\WidgetsResource\Widgets\Chart;
 
 use App\Models\Patients;
 
