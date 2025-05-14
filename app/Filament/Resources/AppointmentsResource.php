@@ -66,8 +66,7 @@ class AppointmentsResource extends Resource
                                 }
                             };
                         },
-                    ])
-                    ->hint('Selecciona solo días de lunes a viernes'),
+                    ]),
 
 
                 Forms\Components\Select::make('time')
@@ -108,7 +107,6 @@ class AppointmentsResource extends Resource
                     ->required()
                     ->reactive()
                     ->disabled(fn(callable $get) => !$get('doctor_id') || !$get('date'))
-                    ->hint('Horarios generados según disponibilidad del médico.')
                     ->rules([
                         function (callable $get) {
                             return function (string $attribute, $value, \Closure $fail) use ($get) {

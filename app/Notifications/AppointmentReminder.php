@@ -50,7 +50,6 @@ class AppointmentReminder extends Notification
             ->line('📅 Fecha: ' . \Carbon\Carbon::parse($this->appointment->date)->format('d/m/Y'))
             ->line('🕐 Hora: ' . $this->appointment->time)
             ->line('👨‍⚕️ Doctor: ' . optional($this->appointment->doctor)->name)
-            ->action('Ver Detalles', url('/appointments/' . $this->appointment->id))
             ->line('Por favor asegúrate de asistir o notificar si no puedes hacerlo. ¡Gracias!');
     }
 

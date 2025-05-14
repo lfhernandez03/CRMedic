@@ -9,6 +9,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Notifications\DatabaseNotification;
 
 class NotificationsResource extends Resource
@@ -24,11 +25,14 @@ class NotificationsResource extends Resource
     {
         return $form
             ->schema([
-                // Las notificaciones normalmente no se editan desde aquí.
-                Forms\Components\TextInput::make('type')->disabled(),
-                Forms\Components\Textarea::make('data')->label('Content')->disabled(),
-                Forms\Components\TextInput::make('notifiable_type')->label('To')->disabled(),
-                Forms\Components\TextInput::make('created_at')->label('Sent At')->disabled(),
+                // Campo Select para elegir entre Email o WhatsApp
+                Forms\Components\Select::make('type')
+                    ->label('Notification Type')
+                    ->options([
+                        'email' => 'Send via Email',
+                        'whatsapp' => 'Send via WhatsApp',
+                    ])
+                    ->required(),
             ]);
     }
 
@@ -37,21 +41,12 @@ class NotificationsResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('type')
-                    ->label('Type')
+                    ->label('Notification Type')
                     ->sortable()
                     ->searchable(),
 
-                Tables\Columns\TextColumn::make('notifiable_type')
-                    ->label('To')
-                    ->sortable(),
-
-                Tables\Columns\TextColumn::make('data')
-                    ->label('Content')
-                    ->limit(80)
-                    ->wrap(),
-
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('Sent At')
+                    ->label('Created At')
                     ->dateTime()
                     ->sortable(),
             ])
@@ -62,6 +57,16 @@ class NotificationsResource extends Resource
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
+    }
+
+    // Este es el método que se ejecutará después de crear una nueva notificación
+    protected function afterCreate($data)
+    {
+        // Ejecutamos el comando Artisan para enviar los correos
+        Artisan::call('appointments:remind');
+
+        // Puedes añadir una confirmación o log para verificar que se ejecutó correctamente
+        $this->info('Reminder emails have been sent.');
     }
 
     public static function getRelations(): array
