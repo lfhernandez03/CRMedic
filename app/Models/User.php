@@ -93,7 +93,6 @@ class User extends Authenticatable
         $this->attributes['specialities'] = is_array($value) ? implode(',', $value) : $value;
 
         // Agrega un dd() para verificar el valor que se guarda
-        dd($this->attributes['specialities']);
     }
 
 

@@ -45,8 +45,8 @@ class PatientsResource extends Resource
                     ->maxLength(255),
 
                 // 👇 MultiSelect cargando enfermedades CIE-10 desde JSON
-                Forms\Components\MultiSelect::make('disease_ids')
-                    ->label('Diagnóstico (CIE-10)')
+                Forms\Components\Select::make('disease_ids')
+                    ->label('Diagnosis (CIE-10)')
                     ->options(function () {
                         // Cargar el archivo JSON desde la ubicación correcta
                         $filePath = base_path('app/codes.json');  // Ruta correcta

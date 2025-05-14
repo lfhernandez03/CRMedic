@@ -57,26 +57,24 @@ class UserResource extends Resource
                         'inactive' => 'Inactive',
                     ]),
 
-                Forms\Components\MultiSelect::make('specialities')
-                    ->label('Especialidades Médicas')
+                Forms\Components\Select::make('specialities')
+                    ->label('Medical Specialities')
+                    ->multiple()
+                    ->hidden(fn($get) => $get('rol') !== 'doctor')
+                    ->required(fn($get) => $get('rol') === 'doctor')
                     ->options(function () {
-                        $filePath = base_path('app/especialidades.json');
+                        // Cargar el archivo JSON desde la ubicación correcta
+                        $filePath = base_path('app/especialidades.json');  // Ruta correcta
                         $data = json_decode(file_get_contents($filePath), true);
-                        return collect($data['specialties'])
-                            ->mapWithKeys(fn(string $spec) => [$spec => $spec])
+                        return collect($data['specialities'])
+                            ->pluck('name', 'id')
                             ->toArray();
                     })
-                    ->preload()
                     ->searchable()
-                    ->afterStateUpdated(function ($state, $set) {
-                        // Asegúrate de que el estado sea un array
-                        $set('specialities', is_array($state) ? $state : []);
-                    })
-                    ->dehydrated(false)
+                    ->preload()
+                    ->placeholder('Select Specialities')
+                    ->dehydrated(true)
                     ->columnSpanFull(),
-
-
-
 
                 Forms\Components\Select::make('horario')
                     ->label('Schedule')
