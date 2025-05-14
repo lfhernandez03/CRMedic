@@ -7,6 +7,8 @@ use Filament\Forms\Components\Textarea;
 use Filament\Notifications\Notification;
 use App\Models\User;
 use App\Notifications\AppointmentReminder;
+use App\Mail\WelcomeEmail; // Importamos el Mailable
+use Illuminate\Support\Facades\Mail;
 
 class SendNotification extends Page
 {
@@ -30,8 +32,7 @@ class SendNotification extends Page
                 Textarea::make('message')
                     ->label('Notification Content')
                     ->required(),
-            ])
-            ->statePath('');
+            ]);
     }
 
     public function send(): void
@@ -40,12 +41,23 @@ class SendNotification extends Page
 
         $user = User::find($data['user_id']);
         if ($user) {
+            // Enviar la notificación de recordatorio de cita
             $user->notify(new AppointmentReminder($data['message']));
 
+            // Llamamos al método para enviar el correo de bienvenida
+            $this->sendWelcomeEmail($user);
+
+            // Notificación de éxito
             Notification::make()
                 ->title('Notification sent successfully!')
                 ->success()
                 ->send();
         }
+    }
+
+    public function sendWelcomeEmail(User $user)
+    {
+        // Enviar el correo de bienvenida al nuevo usuario
+        Mail::to($user->email)->send(new WelcomeEmail($user));
     }
 }

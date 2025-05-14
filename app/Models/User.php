@@ -20,12 +20,11 @@ class User extends Authenticatable
         'birthdate',
         'rol',
         'status',
-        'speciality_id',
+        'specialities',  // Ahora usamos 'specialities' en lugar de 'speciality_id'
         'horario',
         'pacientes_atendidos',
         'pacientes_pendientes'
     ];
-
 
     protected $hidden = [
         'password',
@@ -34,12 +33,8 @@ class User extends Authenticatable
 
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'specialities' => 'array',
     ];
-
-    public function speciality()
-    {
-        return $this->belongsTo(Specialities::class, 'speciality_id');
-    }
 
     public function notifications()
     {
@@ -89,5 +84,23 @@ class User extends Authenticatable
     public function setPatientsPendingAttribute($value)
     {
         $this->attributes['pacientes_pendientes'] = $value;
+    }
+
+    // Mutador para guardar las especialidades como texto plano
+    public function setSpecialitiesAttribute($value)
+    {
+        // Asegúrate de que el valor sea un array
+        $this->attributes['specialities'] = is_array($value) ? implode(',', $value) : $value;
+
+        // Agrega un dd() para verificar el valor que se guarda
+        dd($this->attributes['specialities']);
+    }
+
+
+    // Accesor para leer las especialidades como un array
+    public function getSpecialitiesAttribute($value)
+    {
+        // Convertir el texto plano (separado por comas) en un array
+        return explode(',', $value);
     }
 }

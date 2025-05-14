@@ -5,6 +5,7 @@ namespace App\Filament\Resources\WidgetsResource\Widgets\Bar;
 use App\Models\Appointments;
 use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 
+
 class AppointmentsChartWidget extends ApexChartWidget
 {
     protected static ?string $chartId = 'citasPorEstadoChart';

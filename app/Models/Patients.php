@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
 
-
 class Patients extends Model
 {
     use HasFactory;
@@ -21,6 +20,9 @@ class Patients extends Model
         'medical_history',
     ];
 
+    /**
+     * Relación con las citas (appointments)
+     */
     public function appointments()
     {
         return $this->hasMany(Appointments::class);

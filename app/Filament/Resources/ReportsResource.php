@@ -85,11 +85,6 @@ class ReportsResource extends Resource
                 ->rows(4)
                 ->nullable(),
 
-            Forms\Components\Select::make('specialty_id')
-                ->label('Specialty')
-                ->relationship('specialty', 'name')
-                ->nullable(),
-
 
             Forms\Components\TimePicker::make('time')
                 ->label('Time')
@@ -110,8 +105,7 @@ class ReportsResource extends Resource
                 ->required()
                 ->maxLength(5000),
 
-            Forms\Components\Toggle::make('notificated')
-                ->label('Notified'),
+
         ]);
     }
 

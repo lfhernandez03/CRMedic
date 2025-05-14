@@ -57,13 +57,26 @@ class UserResource extends Resource
                         'inactive' => 'Inactive',
                     ]),
 
+                Forms\Components\MultiSelect::make('specialities')
+                    ->label('Especialidades Médicas')
+                    ->options(function () {
+                        $filePath = base_path('app/especialidades.json');
+                        $data = json_decode(file_get_contents($filePath), true);
+                        return collect($data['specialties'])
+                            ->mapWithKeys(fn(string $spec) => [$spec => $spec])
+                            ->toArray();
+                    })
+                    ->preload()
+                    ->searchable()
+                    ->afterStateUpdated(function ($state, $set) {
+                        // Asegúrate de que el estado sea un array
+                        $set('specialities', is_array($state) ? $state : []);
+                    })
+                    ->dehydrated(false)
+                    ->columnSpanFull(),
 
 
-                Forms\Components\Select::make('speciality_id')
-                    ->label('Speciality')
-                    ->relationship('speciality', 'name')
-                    ->hidden(fn($get) => !in_array($get('rol'), ['doctor', 'admin']))
-                    ->required(fn($get) => $get('rol') === 'doctor'),
+
 
                 Forms\Components\Select::make('horario')
                     ->label('Schedule')
@@ -111,23 +124,24 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('status')
                     ->searchable(),
 
-                Tables\Columns\TextColumn::make('speciality.name')
-                    ->label('Speciality')
-                    ->hidden(fn($record) => $record?->rol !== 'doctor'),
+                Tables\Columns\TextColumn::make('specialities')
+                    ->label('Specialities')
+                    ->formatStateUsing(fn($state) => implode(', ', $state))
+                    ->hidden(fn($record) => !$record || $record->rol !== 'doctor'),
 
                 Tables\Columns\TextColumn::make('horario')
                     ->label('Schedule')
-                    ->hidden(fn($record) => $record?->rol !== 'doctor'),
+                    ->hidden(fn($record) => !$record || $record->rol !== 'doctor'),
 
                 Tables\Columns\TextColumn::make('pacientes_atendidos')
                     ->label('Patients Attended')
                     ->sortable()
-                    ->hidden(fn($record) => $record?->rol !== 'doctor'),
+                    ->hidden(fn($record) => !$record || $record->rol !== 'doctor'),
 
                 Tables\Columns\TextColumn::make('pacientes_pendientes')
                     ->label('Patients Pending')
                     ->sortable()
-                    ->hidden(fn($record) => $record?->rol !== 'doctor'),
+                    ->hidden(fn($record) => !$record || $record->rol !== 'doctor'),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('rol')
