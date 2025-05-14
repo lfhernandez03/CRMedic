@@ -29,21 +29,25 @@ class AppointmentsResource extends Resource
                 Forms\Components\Select::make('patient_id')
                     ->label('Patient')
                     ->relationship('patient', 'name')
-                    ->required(),
+                    ->required(fn(callable $get) => $get('context') === 'create'), // Solo requerido al crear
 
                 Forms\Components\Select::make('doctor_id')
                     ->label('Doctor')
                     ->relationship('doctor', 'name')
-                    ->required()
+                    ->required(fn(callable $get) => $get('context') === 'create') // Solo requerido al crear
                     ->reactive(),
 
                 Forms\Components\DatePicker::make('date')
-                    ->required()
+                    ->required(fn(callable $get) => $get('context') === 'create') // Solo requerido al crear
                     ->reactive()
                     ->native(false)
-                    ->minDate(now()) // No permitir fechas pasadas
-                    ->disabledDates(function () {
-                        // Generamos 6 meses de fechas desde hoy
+                    ->minDate(fn(callable $get) => $get('context') === 'create' ? now() : null) // Restringir fechas pasadas solo al crear
+                    ->disabledDates(function (callable $get) {
+                        if ($get('context') === 'edit') {
+                            return []; // No deshabilitar fechas al editar
+                        }
+
+                        // Generar 6 meses de fechas desde hoy
                         return collect(range(0, 180))
                             ->map(function ($i) {
                                 $date = Carbon::today()->addDays($i);
@@ -74,6 +78,7 @@ class AppointmentsResource extends Resource
                     ->options(function (callable $get) {
                         $doctorId = $get('doctor_id');
                         $date = $get('date');
+                        
 
                         if (!$doctorId || !$date) {
                             return [];
@@ -104,7 +109,8 @@ class AppointmentsResource extends Resource
                         // Convertimos en formato clave-valor para Filament
                         return $disponibles->mapWithKeys(fn($hora) => [$hora => $hora]);
                     })
-                    ->required()
+                    ->required(fn(callable $get) => $get('context') === 'create') // Solo requerido al crear
+                    ->default(fn(callable $get) => $get('time')) // Mantener el valor actual al editar
                     ->reactive()
                     ->disabled(fn(callable $get) => !$get('doctor_id') || !$get('date'))
                     ->rules([
@@ -112,6 +118,8 @@ class AppointmentsResource extends Resource
                             return function (string $attribute, $value, \Closure $fail) use ($get) {
                                 $doctorId = $get('doctor_id');
                                 $date = $get('date');
+                                $appointmentId = $get('id'); // Obtener el ID de la cita actual
+                                
 
                                 if (!$doctorId || !$date || !$value) {
                                     return;
@@ -120,6 +128,9 @@ class AppointmentsResource extends Resource
                                 $exists = Appointments::where('doctor_id', $doctorId)
                                     ->whereDate('date', $date)
                                     ->whereTime('time', $value)
+                                    ->when($appointmentId, function ($query, $id) {
+                                        $query->where('id', '!=', $id);
+                                    })
                                     ->exists();
 
                                 if ($exists) {
@@ -135,16 +146,15 @@ class AppointmentsResource extends Resource
                         'completed' => 'Completed',
                         'canceled' => 'Canceled',
                     ])
+                    ->label('Status')
+                    ->reactive()
                     ->default('scheduled')
                     ->required(),
 
                 Forms\Components\Textarea::make('reason')
                     ->label('Reason')
-                    ->required()
+                    ->required(fn(callable $get) => $get('context') === 'create') // Solo requerido al crear
                     ->maxLength(5000),
-
-                Forms\Components\Toggle::make('notificated')
-                    ->label('Notified'),
             ]);
     }
 
@@ -169,12 +179,9 @@ class AppointmentsResource extends Resource
                 Tables\Columns\TextColumn::make('time')
                     ->sortable(),
 
-                Tables\Columns\BadgeColumn::make('status')
-                    ->colors([
-                        'scheduled' => 'info',
-                        'completed' => 'success',
-                        'canceled' => 'danger',
-                    ]),
+                Tables\Columns\TextColumn::make('status')
+                    ->label('Status')
+                    ->badge(),
             ])
             ->filters([])
             ->actions([
