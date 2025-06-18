@@ -14,4 +14,8 @@ export default defineConfig({
         host: '0.0.0.0',
         allowedHosts: ['crmedic-os8k.onrender.com'],
     },
+    build: {
+        manifest: true,
+        outDir: 'public/build',
+    },
 });
