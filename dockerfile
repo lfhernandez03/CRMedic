@@ -34,4 +34,4 @@ ENV APP_KEY=base64:rYonqXyOw5iccqeB4K0S0nGFoJxqfw/5sFuB3uZBeTM=
 ENV APP_URL=https://crmedic-os8k.onrender.com
 
 # Comando de inicio
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=80"]
+CMD ["php", "-S", "0.0.0.0:80", "-t", "public"]
