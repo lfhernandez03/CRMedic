@@ -11,7 +11,7 @@ services:
       - key: APP_ENV
         value: production
       - key: APP_URL
-        value: https://crmedic-os8k.onrender.com
+        value: https://crmedic-c38h.onrender.com
       - key: DB_CONNECTION
         value: postgresql
       - key: DB_HOST

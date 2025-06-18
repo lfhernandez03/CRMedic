@@ -31,7 +31,7 @@ RUN chmod -R 775 storage bootstrap/cache
 # Variables de entorno
 ENV APP_ENV=production
 ENV APP_KEY=base64:rYonqXyOw5iccqeB4K0S0nGFoJxqfw/5sFuB3uZBeTM=
-ENV APP_URL=https://crmedic-os8k.onrender.com
+ENV APP_URL=https://crmedic-c38h.onrender.com
 
 # Comando de inicio
 CMD ["php", "-S", "0.0.0.0:80", "-t", "public"]
