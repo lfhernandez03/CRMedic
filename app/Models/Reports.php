@@ -19,7 +19,6 @@ class Reports extends Model
         'time',
         'status',
         'reason',
-        'notificated',
     ];
 
     public function patient()
