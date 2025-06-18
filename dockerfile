@@ -1,31 +1,22 @@
-# Imagen base con PHP, Composer, Node, Nginx y supervisord
-FROM webdevops/php-nginx:8.2
+FROM laravelsail/php82-composer:latest
 
-# Establece el directorio de trabajo
-WORKDIR /app
-
-# Copia todos los archivos del proyecto al contenedor
+# Copia el código
+WORKDIR /var/www/html
 COPY . .
 
 # Instala dependencias PHP
 RUN composer install --no-dev --optimize-autoloader
 
-# Instala dependencias de Node y compila assets con Vite
+# Instala dependencias Node y compila assets
 RUN npm install && npm run build
 
-# Asigna permisos para Laravel (storage y cache)
+# Permisos Laravel
 RUN chmod -R 775 storage bootstrap/cache
 
-# Copia el archivo .env.production si existe, como .env
-# (Opcional, si usas Render secrets para generar tu .env)
-# COPY .env.production .env
-
-# Establece la APP_ENV y APP_URL si Render no lo hace por variables
+# Variables necesarias
 ENV APP_ENV=production
+ENV APP_KEY=base64:rYonqXyOw5iccqeB4K0S0nGFoJxqfw/5sFuB3uZBeTM=
 ENV APP_URL=https://crmedic-os8k.onrender.com
 
-# Expone el puerto para que Render lo use
-EXPOSE 80
-
-# Comando para iniciar Laravel con php-fpm + nginx
-CMD ["/opt/docker/bin/entrypoint.sh"]
+# Servidor web
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=80"]
