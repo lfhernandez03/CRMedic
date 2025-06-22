@@ -1,6 +1,15 @@
 #!/usr/bin/env bash
 # build.sh - Script para construir la aplicación Laravel en Render
 
+# Instalar Composer si no existe
+if ! command -v composer &> /dev/null
+then
+    echo "Instalando Composer..."
+    php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+    php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+    php -r "unlink('composer-setup.php');"
+fi
+
 set -o errexit  # exit on error
 
 echo "🚀 Iniciando build de Laravel..."
