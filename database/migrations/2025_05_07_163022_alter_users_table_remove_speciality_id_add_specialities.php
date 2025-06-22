@@ -14,11 +14,7 @@ class AlterUsersTableRemoveSpecialityIdAddSpecialities extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            // Eliminar el campo speciality_id
-            $table->dropColumn('speciality_id');
-
-            // Agregar el campo specialities como JSON
-            $table->json('specialities')->nullable();  // Usamos nullable() para permitir que pueda estar vacío
+            
         });
     }
 
