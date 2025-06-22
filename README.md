@@ -1,66 +1,90 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# CRM Medic
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Sistema de gestión de citas y usuarios médicos construido con Laravel, Filament y Vite.
 
-## About Laravel
+## Características
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- Gestión de usuarios (doctores, administradores, pacientes)
+- Gestión de citas médicas
+- Panel administrativo con Filament
+- Autenticación segura
+- Horarios y especialidades dinámicas
+- Notificaciones de citas
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Requisitos
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- PHP >= 8.1
+- Composer
+- Node.js y npm
+- Base de datos (MySQL, PostgreSQL, etc.)
 
-## Learning Laravel
+## Instalación
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+1. **Clona el repositorio**
+   ```sh
+   git clone https://github.com/tuusuario/crmedic.git
+   cd crmedic
+   ```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+2. **Instala dependencias de PHP**
+   ```sh
+   composer install
+   ```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+3. **Instala dependencias de Node**
+   ```sh
+   npm install
+   ```
 
-## Laravel Sponsors
+4. **Copia el archivo de entorno y configura tus variables**
+   ```sh
+   cp .env.example .env
+   ```
+   Edita `.env` y configura tu base de datos y otros parámetros.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+5. **Genera la clave de la aplicación**
+   ```sh
+   php artisan key:generate
+   ```
 
-### Premium Partners
+6. **Ejecuta las migraciones**
+   ```sh
+   php artisan migrate
+   ```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+7. **Compila los assets**
+   ```sh
+   npm run build
+   ```
 
-## Contributing
+8. **Inicia el servidor de desarrollo**
+   ```sh
+   php artisan serve
+   ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+   Accede a [http://localhost:8000](http://localhost:8000) o a la URL que te indique Render si es deploy.
 
-## Code of Conduct
+## Acceso al panel administrativo
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- **Filament Admin:** `/admin/login`
+- **Login estándar:** `/login` (si está habilitado)
 
-## Security Vulnerabilities
+## Despliegue en Render
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- Asegúrate de que tu servidor escuche en `0.0.0.0`
+- Configura la variable `APP_URL` en `.env` con la URL pública de Render
+- Agrega tu dominio a `server.allowedHosts` en `vite.config.js` si usas Vite
 
-## License
+## Personalización
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- Las especialidades médicas se configuran en `app/especialidades.json`
+- Los horarios de doctores se gestionan desde el panel de administración
+
+## Soporte
+
+¿Tienes dudas o problemas?  
+Abre un issue en GitHub o contacta al equipo de desarrollo.
+
+---
+
+¡Gracias por usar CRM Medic!
