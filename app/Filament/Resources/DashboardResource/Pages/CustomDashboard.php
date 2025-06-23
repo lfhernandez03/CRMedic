@@ -11,7 +11,7 @@ use App\Models\User;
 use Filament\Pages\Dashboard as BaseDashboard;
 
 
-class Dashboard extends BaseDashboard
+class CustomDashboard extends BaseDashboard
 {
     public function getWidgets(): array
     {
