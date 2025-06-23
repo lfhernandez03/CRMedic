@@ -8,7 +8,7 @@ use App\Filament\Resources\WidgetsResource\Widgets\Bar\AppointmentsChartWidget;
 use App\Http\Controllers\AppointmentsController;
 use App\Models\Appointments;
 use App\Models\User;
-use Filament\Pages\Dashboard as BaseDashboard;
+use Filament\Pages\Page as BaseDashboard;
 
 
 class CustomDashboard extends BaseDashboard
