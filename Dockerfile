@@ -53,5 +53,5 @@ RUN php artisan package:discover --ansi
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 775 storage bootstrap/cache
 
-EXPOSE 8080
+EXPOSE 80
 CMD ["apache2-foreground"]
