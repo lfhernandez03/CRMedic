@@ -7,16 +7,16 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::table('diseases', function (Blueprint $table) {
-            $table->string('code')->unique()->after('id');
-            $table->string('name')->after('code');
-        });
+        // Schema::table('diseases', function (Blueprint $table) {
+        //   $table->string('code')->unique()->after('id');
+        // $table->string('name')->after('code');
+        //});
     }
 
     public function down(): void
     {
-        Schema::table('diseases', function (Blueprint $table) {
-            $table->dropColumn(['code', 'name']);
-        });
+        // Schema::table('diseases', function (Blueprint $table) {
+        //   $table->dropColumn(['code', 'name']);
+        //});
     }
 };

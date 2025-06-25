@@ -14,11 +14,15 @@ class UpdateUsersTableForSpecialities extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            // Eliminar el campo speciality_id
-            $table->dropColumn('speciality_id');
+            // Eliminar el campo speciality_id si existe
+            if (Schema::hasColumn('users', 'speciality_id')) {
+                $table->dropColumn('speciality_id');
+            }
 
-            // Agregar el campo specialities como JSON
-            $table->json('specialities')->nullable();  // Usamos nullable() para permitir que pueda estar vacío
+            // Agregar el campo specialities si no existe
+            if (!Schema::hasColumn('users', 'specialities')) {
+                $table->text('specialities')->nullable(); // Puedes cambiar a json si lo prefieres
+            }
         });
     }
 
@@ -30,11 +34,15 @@ class UpdateUsersTableForSpecialities extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            // Volver a agregar speciality_id
-            $table->unsignedBigInteger('speciality_id')->nullable();
+            // Agregar de nuevo speciality_id si no existe
+            if (!Schema::hasColumn('users', 'speciality_id')) {
+                $table->unsignedBigInteger('speciality_id')->nullable();
+            }
 
-            // Eliminar el campo specialities
-            $table->dropColumn('specialities');
+            // Eliminar specialities si existe
+            if (Schema::hasColumn('users', 'specialities')) {
+                $table->dropColumn('specialities');
+            }
         });
     }
 }
