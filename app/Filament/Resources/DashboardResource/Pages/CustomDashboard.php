@@ -2,9 +2,9 @@
 
 namespace App\Filament\Pages;
 
-use App\Filament\Resources\WidgetsResource\Widgets\Chart\PatientChartWidget;
-use App\Filament\Resources\WidgetsResource\Widgets\Chart\UserChartWidget;
-use App\Filament\Resources\WidgetsResource\Widgets\Bar\AppointmentsChartWidget;
+use App\Filament\Resources\WidgetsResource\Widgets\PatientChartWidget;
+use App\Filament\Resources\WidgetsResource\Widgets\UserChartWidget;
+use App\Filament\Resources\WidgetsResource\Widgets\AppointmentsChartWidget;
 use App\Http\Controllers\AppointmentsController;
 use App\Models\Appointments;
 use App\Models\User;
