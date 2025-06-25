@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Filament\Resources\WidgetsResource\Widgets\Bar;
+namespace App\Filament\Resources\WidgetsResource\Widgets;
 
 use App\Models\Appointments;
 use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
-
 
 class AppointmentsChartWidget extends ApexChartWidget
 {
@@ -13,11 +12,11 @@ class AppointmentsChartWidget extends ApexChartWidget
 
     protected function getOptions(): array
     {
-        $status = ['scheduled', 'completed', 'cancelled'];
+        $statusList = ['scheduled', 'completed', 'cancelled'];
         $colors = ['#facc15', '#4ade80', '#f87171'];
 
         // Contamos las citas por estado
-        $count = collect($status)->map(function ($status) {
+        $count = collect($statusList)->map(function ($status) {
             return Appointments::where('status', $status)->count();
         });
 
@@ -42,7 +41,7 @@ class AppointmentsChartWidget extends ApexChartWidget
                 ],
             ],
             'xaxis' => [
-                'categories' => $status,
+                'categories' => $statusList,
                 'labels' => ['style' => ['colors' => '#cbd5e1']],
             ],
             'colors' => $colors,

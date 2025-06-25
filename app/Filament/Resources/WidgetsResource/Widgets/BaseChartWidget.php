@@ -1,17 +1,20 @@
 <?php
 
-namespace App\Filament\Resources\WidgetsResource\Widgets\Chart;
+namespace App\Filament\Resources\WidgetsResource\Widgets;
 
 use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 use App\Models\User;
 use Carbon\Carbon;
 
-abstract class BaseChartWidget extends ApexChartWidget
+class BaseChartWidget extends ApexChartWidget
 {
     protected static ?string $chartId = 'totalUsersWidget';
     protected static ?string $heading = 'Total Users';
 
-    abstract protected function getModelClass(): string;
+    protected function getModelClass(): string
+    {
+        return User::class; // Modelo por defecto
+    }
 
     protected function getOptions(): array
     {
@@ -21,17 +24,18 @@ abstract class BaseChartWidget extends ApexChartWidget
 
         $percentageChange = $this->getPercentageChange($nuevosEstaSemana, $nuevosUltimos14Dias);
 
-        $totalUsers = $this->getModelClass()::count();
+        $modelClass = $this->getModelClass();
+        $totalUsers = $modelClass::count();
 
         $sign = $percentageChange > 0 ? '↗' : ($percentageChange < 0 ? '↘' : '→');
         $subtitleColor = $percentageChange > 0 ? '#6ee7b7' : ($percentageChange < 0 ? '#f87171' : '#d1d5db');
-        $color = $percentageChange > 0 ? '#4CAF50' : '#EF4444'; // verde o rojo
+        $color = $percentageChange > 0 ? '#4CAF50' : '#EF4444';
 
         return [
             'chart' => [
                 'type' => 'area',
                 'sparkline' => ['enabled' => true],
-                'height' => 150, // Compacto como el ejemplo
+                'height' => 150,
             ],
             'series' => [
                 [
@@ -94,16 +98,17 @@ abstract class BaseChartWidget extends ApexChartWidget
 
     private function getUserCountBetweenDates(Carbon $startDate, Carbon $endDate): int
     {
-        return $this->getModelClass()::whereBetween('created_at', [$startDate, $endDate])->count();
+        $modelClass = $this->getModelClass();
+        return $modelClass::whereBetween('created_at', [$startDate, $endDate])->count();
     }
 
-    protected function getPercentageChange($currentCount, $previousCount): string
+    protected function getPercentageChange(int $currentCount, int $previousCount): string
     {
         if ($previousCount > 0) {
             return number_format((($currentCount - $previousCount) / $previousCount) * 100, 1);
-        } else if ($previousCount == 0 && $currentCount > 0) {
+        } elseif ($previousCount == 0 && $currentCount > 0) {
             return '100.0';
         }
-        return '0';
+        return '0.0';
     }
 }
