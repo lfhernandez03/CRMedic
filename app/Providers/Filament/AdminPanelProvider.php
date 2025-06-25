@@ -33,9 +33,9 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->pages([
-                CustomDashboard::class, // Solo esta línea
+            //    CustomDashboard::class, // Solo esta línea
             ])
-            ->discoverWidgets(in: app_path('Filament/Resources/WidgetsResource/Widgets'), for: 'App\\Filament\\Resources\\WidgetsResource\\Widgets')
+            //->discoverWidgets(in: app_path('Filament/Resources/WidgetsResource/Widgets'), for: 'App\\Filament\\Resources\\WidgetsResource\\Widgets')
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
