@@ -7,6 +7,7 @@ use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use App\Filament\Pages\CustomDashboard;
+use Filament\Pages\Dashboard;
 use Leandrocfe\FilamentApexCharts\FilamentApexChartsPlugin;
 
 class AdminPanelProvider extends PanelProvider
@@ -22,9 +23,9 @@ class AdminPanelProvider extends PanelProvider
                 'primary' => Color::Cyan,
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
-            //->pages([
-                //CustomDashboard::class, // Solo esta línea
-            //])
+            ->pages([
+                Dashboard::class, // Solo esta línea
+            ])
             ->discoverWidgets(in: app_path('Filament/Resources/WidgetsResource/Widgets'), for: 'App\\Filament\\Resources\\WidgetsResource\\Widgets')
             ->authMiddleware([
                 Authenticate::class,
