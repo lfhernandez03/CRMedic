@@ -23,15 +23,23 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        // Cargar especialidades desde el JSON
+        $json = file_get_contents(base_path('app/especialidades.json'));
+        $data = json_decode($json, true);
+        $specialities = collect($data['specialities'])->pluck('name')->toArray();
+
+        // Seleccionar 1 a 3 especialidades aleatorias
+        $userSpecialities = collect($specialities)->random(rand(1, 3))->values()->all();
+
         return [
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
             'password' => bcrypt('password'),
             'phone' => $this->faker->phoneNumber(),
             'birthdate' => $this->faker->date('Y-m-d', '2005-01-01'),
-            'rol' => $this->faker->randomElement(['admin', 'doctor',]),
+            'rol' => $this->faker->randomElement(['admin', 'doctor']),
             'status' => $this->faker->randomElement(['active', 'inactive']),
-            'speciality_id' => null, // Ajusta si tienes un modelo de especialidades
+            'specialities' => $userSpecialities,
             'horario' => 'Lun-Vie 9:00am - 5:00pm',
             'pacientes_atendidos' => $this->faker->numberBetween(0, 100),
             'pacientes_pendientes' => $this->faker->numberBetween(0, 50),
