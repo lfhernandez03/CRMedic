@@ -41,11 +41,7 @@ class User extends Authenticatable implements FilamentUser
     // MÉTODO REQUERIDO PARA FILAMENT
     public function canAccessPanel(Panel $panel): bool
     {
-        // Permitir acceso a todos los usuarios (ajusta según tu lógica)
-        return true;
-        
-        // O si solo quieres que ciertos roles accedan:
-        // return in_array($this->rol, ['admin', 'medico']);
+        return true; 
     }
 
     public function notifications()

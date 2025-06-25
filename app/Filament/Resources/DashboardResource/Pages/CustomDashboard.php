@@ -5,14 +5,18 @@ namespace App\Filament\Pages;
 use App\Filament\Resources\WidgetsResource\Widgets\PatientChartWidget;
 use App\Filament\Resources\WidgetsResource\Widgets\UserChartWidget;
 use App\Filament\Resources\WidgetsResource\Widgets\AppointmentsChartWidget;
-use App\Http\Controllers\AppointmentsController;
-use App\Models\Appointments;
-use App\Models\User;
-use Filament\Pages\Page as BaseDashboard;
+use Filament\Pages\Dashboard;
 
-
-class CustomDashboard extends BaseDashboard
+class CustomDashboard extends Dashboard
 {
+    protected static ?string $navigationIcon = 'heroicon-o-home';
+    
+    protected static string $view = 'filament.pages.dashboard';
+    
+    protected static ?string $title = 'Dashboard';
+    
+    protected static ?string $navigationLabel = 'Dashboard';
+
     public function getWidgets(): array
     {
         return [
@@ -21,7 +25,8 @@ class CustomDashboard extends BaseDashboard
             AppointmentsChartWidget::class,
         ];
     }
-    public function getColumns(): int
+
+    public function getColumns(): int|string|array
     {
         return 2;
     }
