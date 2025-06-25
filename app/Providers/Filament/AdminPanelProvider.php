@@ -2,7 +2,7 @@
 
 namespace App\Providers\Filament;
 
-use App\Filament\Pages\CustomDashboard as PagesCustomDashboard;
+use App\Filament\Pages\CustomDashboard;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -10,7 +10,6 @@ use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
-use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -32,9 +31,8 @@ class AdminPanelProvider extends PanelProvider
                 'primary' => Color::Cyan,
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
-            ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
-                PagesCustomDashboard::class, // Registra el dashboard personalizado
+                CustomDashboard::class, // Solo esta línea
             ])
             ->discoverWidgets(in: app_path('Filament/Resources/WidgetsResource/Widgets'), for: 'App\\Filament\\Resources\\WidgetsResource\\Widgets')
             ->middleware([
