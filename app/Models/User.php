@@ -7,8 +7,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -20,7 +22,7 @@ class User extends Authenticatable
         'birthdate',
         'rol',
         'status',
-        'specialities',  // Ahora usamos 'specialities' en lugar de 'speciality_id'
+        'specialities',
         'horario',
         'pacientes_atendidos',
         'pacientes_pendientes'
@@ -35,6 +37,16 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'specialities' => 'array',
     ];
+
+    // MÉTODO REQUERIDO PARA FILAMENT
+    public function canAccessPanel(Panel $panel): bool
+    {
+        // Permitir acceso a todos los usuarios (ajusta según tu lógica)
+        return true;
+        
+        // O si solo quieres que ciertos roles accedan:
+        // return in_array($this->rol, ['admin', 'medico']);
+    }
 
     public function notifications()
     {
@@ -89,17 +101,12 @@ class User extends Authenticatable
     // Mutador para guardar las especialidades como texto plano
     public function setSpecialitiesAttribute($value)
     {
-        // Asegúrate de que el valor sea un array
         $this->attributes['specialities'] = is_array($value) ? implode(',', $value) : $value;
-
-        // Agrega un dd() para verificar el valor que se guarda
     }
-
 
     // Accesor para leer las especialidades como un array
     public function getSpecialitiesAttribute($value)
     {
-        // Convertir el texto plano (separado por comas) en un array
-        return explode(',', $value);
+        return $value ? explode(',', $value) : [];
     }
 }
